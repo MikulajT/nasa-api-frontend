@@ -12,19 +12,33 @@ type Apod = {
 function App() {
   const [apod, setApod] = useState<Apod>({});
   const [isApodLoaded, setIsApodLoaded] = useState<boolean>(false);
+  const [errorOccured, setErrorOccured] = useState<boolean>(false);
   useEffect(() => {
-    fetch('http://localhost:5076/api/apod')
-       .then((response) => response.json())
-       .then((data) => {
-          setApod(data);
-          setIsApodLoaded(true);
-       })
-       .catch((err) => {
-          console.log(err.message);
-       });
- }, []);
+    async function fetchApod() {
+      let response = await fetch('http://localhost:5076/api/apod');
+      if (response.ok) {
+        const data : Apod = await response.json();
+        setIsApodLoaded(true);
+        setApod(data);
+      }
+      else {
+        setErrorOccured(true);
+      }
+    }
+    fetchApod();
+  }, []);
 
-  if (isApodLoaded) {
+  if (errorOccured) {
+    return (
+      <h1 className='mt-2 text-center'>Error occured when calling API 😕</h1>
+    );
+  }
+  else if (!isApodLoaded) {
+    return (
+      <LoadingEllipsis/>
+    );
+  }
+  else {
     return (
       <div className='container-fluid'>
       <h1 className='text-center'>Astronomy Picture of the Day</h1>
@@ -34,12 +48,7 @@ function App() {
       <p className='text-center'>Image copyright: {apod.copyright}</p>
       </div>
     );
-  }
-  else {
-    return (
-      <LoadingEllipsis/>
-    );
-  }
+  } 
 }
 
 export default App;
