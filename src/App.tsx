@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import LoadingEllipsis from './LoadingEllipsis';
 
 type Apod = {
   hdurl?: string;
@@ -29,14 +30,14 @@ function App() {
       <h1 className='text-center'>Astronomy Picture of the Day</h1>
       <h2 className='text-center'>{apod.title} ({apod.date})</h2>
       <img src={apod.hdurl} className='d-block m-auto' id='apod' alt={apod.title}></img>
-      <p id='explanation'>Description: {apod.explanation}</p>
+      <p id='explanation'><b>Description:</b> {apod.explanation}</p>
       <p className='text-center'>Image copyright: {apod.copyright}</p>
       </div>
     );
   }
   else {
     return (
-      <h1 className='text-center'>Loading APOD...</h1>
+      <LoadingEllipsis/>
     );
   }
 }
