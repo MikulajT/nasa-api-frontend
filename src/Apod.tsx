@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import LoadingEllipsis from './LoadingEllipsis';
 
-//TODO: Check if code works after changing type to interface
-interface Apod {
+interface IApod {
   hdurl: string;
   date: string;
   copyright: string;
@@ -11,15 +10,15 @@ interface Apod {
 };
 
 function App() {
-  const emptyApod = {} as Apod;
-  const [apod, setApod] = useState<Apod>(emptyApod);
+  const emptyApod = {} as IApod;
+  const [apod, setApod] = useState<IApod>(emptyApod);
   const [isApodLoaded, setIsApodLoaded] = useState<boolean>(false);
   const [errorOccured, setErrorOccured] = useState<boolean>(false);
   useEffect(() => {
     async function fetchApod() {
       let response = await fetch('http://localhost:5076/api/apod');
       if (response.ok) {
-        const data : Apod = await response.json();
+        const data : IApod = await response.json();
         setIsApodLoaded(true);
         setApod(data);
       }
