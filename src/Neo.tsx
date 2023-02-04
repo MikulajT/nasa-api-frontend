@@ -46,8 +46,9 @@ export const options: ChartOptions<'bubble'> = {
         tooltip: {
             callbacks: {
                 label: function(context) {
-                    let neo = context.raw as INeo;
-                    return neo.name;
+                    const neo = context.raw as INeo;
+                    const labelText: string[] = [`Name: ${neo.name}`, `Date: ${neo.x}`, `Distance from Earth: ${neo.y} (km)`];
+                    return labelText;
                 }
             }
         }
