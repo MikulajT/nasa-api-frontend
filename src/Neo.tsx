@@ -36,10 +36,24 @@ export const options: ChartOptions<'bubble'> = {
       type: 'time',
       time: {
         unit: 'day'
+      },
+      title: {
+        display: true,
+        text: 'Date',
+        font: {
+          size: 16,
+        }
       }
     },
     y: {
-      beginAtZero: true
+      beginAtZero: true,
+      title: {
+        display: true,
+        text: 'Distance from Earth (km)',
+        font: {
+          size: 16,
+        }
+      }
     }
   },
     plugins: {
