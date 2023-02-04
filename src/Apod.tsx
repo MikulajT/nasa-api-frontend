@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { Typography } from '@mui/material';
+import { Container, Box } from '@mui/system';
 import LoadingEllipsis from './LoadingEllipsis';
 
 interface IApod {
@@ -31,7 +33,7 @@ function App() {
 
   if (errorOccured) {
     return (
-      <h1 className='mt-2 text-center'>Error occured when calling API 😕</h1>
+      <Typography variant='h2' align='center'>Error occured when calling API 😕</Typography>
     );
   }
   else if (!isApodLoaded) {
@@ -41,13 +43,20 @@ function App() {
   }
   else {
     return (
-        <div className='container-fluid'>
-            <h1 className='text-center'>Astronomy Picture of the Day</h1>
-            <h2 className='text-center'>{apod.title} ({apod.date})</h2>
-            <img src={apod.hdurl} className='d-block m-auto' id='apod' alt={apod.title}></img>
-            <p id='explanation'><b>Description:</b> {apod.explanation}</p>
-            <p className='text-center'>Image copyright: {apod.copyright}</p>
-        </div>
+      <Container>
+        <Typography variant='h2' align='center'>Astronomy Picture of the Day</Typography>
+        <Typography variant='h5' align='center'>{apod.title} ({apod.date})</Typography>
+        <Box
+          component="img"
+          src={apod.hdurl}
+          alt={apod.title}
+          id='apod'
+          m='auto'
+          display='block'
+        />
+        <Typography variant='body1'><b>Description:</b> {apod.explanation}</Typography>
+        <Typography variant='body1' align='center' sx={{mt: 2}}>Image copyright: {apod.copyright}</Typography>
+      </Container>
     );
   } 
 }

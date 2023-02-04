@@ -1,9 +1,5 @@
 #apod {
     max-width: 100%;
-    max-height: 65vh;
+    max-height: 62vh;
     width: auto;
-}
-
-#explanation::first-letter {
-    font-size: 200%;
 }

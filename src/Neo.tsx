@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import LoadingEllipsis from './LoadingEllipsis';
 import {
   Chart as ChartJS,
   LinearScale,
@@ -10,6 +9,8 @@ import {
 } from 'chart.js';
 import type { ChartOptions } from 'chart.js';
 import { Bubble } from 'react-chartjs-2';
+import { Typography } from '@mui/material';
+import LoadingEllipsis from './LoadingEllipsis';
 import 'chartjs-adapter-moment';
 
 interface INeo {
@@ -120,7 +121,7 @@ const Neo = () => {
 
   if (errorOccured) {
     return (
-      <h1 className='mt-2 text-center'>Error occured when calling API 😕</h1>
+      <Typography variant='h2' align='center'>Error occured when calling API 😕</Typography>
     );
   }
   else if (!isNeoLoaded) {
@@ -131,7 +132,7 @@ const Neo = () => {
   else {
     return(
       <>
-        <h1 className="text-center">Near-Earth Objects</h1>
+        <Typography variant='h2' align='center'>Near-Earth Objects</Typography>
         <Bubble options={options} data={data} />
       </>
     );
