@@ -54,7 +54,7 @@ function App() {
           m='auto'
           display='block'
         />
-        <Typography variant='body1'><b>Description:</b> {apod.explanation}</Typography>
+        <Typography variant='body1' sx={{mt: 1}}><b>Description:</b> {apod.explanation}</Typography>
         <Typography variant='body1' align='center' sx={{mt: 2}}>Image copyright: {apod.copyright}</Typography>
       </Container>
     );

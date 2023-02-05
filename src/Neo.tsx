@@ -1,4 +1,9 @@
 import { useState, useEffect } from 'react';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import dayjs, { Dayjs } from 'dayjs';
+import {TextField, Stack} from '@mui/material';
 import {
   Chart as ChartJS,
   LinearScale,
@@ -75,6 +80,9 @@ const Neo = () => {
   const [neo, setNeo] = useState<INeo[]>(emptyNeo);
   const [isNeoLoaded, setIsNeoLoaded] = useState<boolean>(false);
   const [errorOccured, setErrorOccured] = useState<boolean>(false);
+  const [fromDate, setFromDate] = useState<Dayjs | null>(dayjs());
+  const [toDate, setToDate] = useState<Dayjs | null>(dayjs());
+
   const data = {
     datasets: [
     {
@@ -93,31 +101,41 @@ const Neo = () => {
       backgroundColor: 'rgb(25, 25, 112)',
     },
   ]
-
   };
+
   useEffect(() => {
-    async function fetchNeo() {
-      let response = await fetch('http://localhost:5076/api/neo');
-      if (response.ok) {
-        const data : INeoApiResponse[] = await response.json();
-        const neos : INeo[] = data.map(obj => (
-          { 
-            x: obj.closeApproachDateFull,
-            y: obj.missDistance,
-            r: obj.estimatedDiameter,
-            isPotentiallyHazardousAsteroid: obj.isPotentiallyHazardousAsteroid,  
-            name: obj.name    
-          }
-          ))
-        setIsNeoLoaded(true);
-        setNeo(neos);
-      }
-      else {
-        setErrorOccured(true);
-      }
-    }
     fetchNeo();
-  }, []);
+  }, [fromDate, toDate]);
+
+  async function fetchNeo() {
+    setIsNeoLoaded(false);
+    let response = await fetch(`http://localhost:5076/api/neo?startDate=${fromDate?.format('MM-DD-YYYY')}&endDate=${toDate?.format('MM-DD-YYYY')}`);
+    if (response.ok) {
+      const data : INeoApiResponse[] = await response.json();
+      const neos : INeo[] = data.map(obj => (
+        { 
+          x: obj.closeApproachDateFull,
+          y: obj.missDistance,
+          r: obj.estimatedDiameter,
+          isPotentiallyHazardousAsteroid: obj.isPotentiallyHazardousAsteroid,  
+          name: obj.name    
+        }
+        ))
+      setIsNeoLoaded(true);
+      setNeo(neos);
+    }
+    else {
+      setErrorOccured(true);
+    }
+  }
+
+  function handleFromDateChange(newValue: Dayjs | null) {
+    setFromDate(newValue);
+  };
+
+  function handleToDateChange(newValue: Dayjs | null) {
+    setToDate(newValue);
+  };
 
   if (errorOccured) {
     return (
@@ -133,6 +151,24 @@ const Neo = () => {
     return(
       <>
         <Typography variant='h2' align='center'>Near-Earth Objects</Typography>
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+          <Stack direction="row" justifyContent='center' spacing={4} sx={{mt: 2, mb: 2}}>
+            <DesktopDatePicker
+              label="From"
+              inputFormat="DD-MM-YYYY"
+              value={fromDate}
+              onChange={handleFromDateChange}
+              renderInput={(params) => <TextField {...params} />}
+            />
+            <DesktopDatePicker
+              label="To"
+              inputFormat="DD-MM-YYYY"
+              value={fromDate}
+              onChange={handleToDateChange}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </Stack>
+        </LocalizationProvider>
         <Bubble options={options} data={data} />
       </>
     );
