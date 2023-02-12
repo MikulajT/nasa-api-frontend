@@ -3,3 +3,17 @@
     max-height: 62vh;
     width: auto;
 }
+
+.box-border {
+    border:3px solid #000000;
+    border-width:3px;
+    border-style:solid;
+    border-color:#000000;   
+    transition: 0.3s; 
+}
+
+.box-border:hover {
+    -webkit-box-shadow:0px 0px 5px 1px #1a1a1a ;
+    -moz-box-shadow:0px 0px 5px 1px #1a1a1a ;
+    box-shadow:0px 0px 5px 1px #1a1a1a ;
+}

@@ -14,7 +14,8 @@ interface ChildProps {
 const NeoEntry: React.FC<ChildProps> = (props) => {
     return (
         <Box 
-            sx={{ border: 1, borderColor: 'text.primary', m: 0, p: 1 }} 
+            className="box-border"
+            sx={{ border: 1, borderColor: 'text.primary', marginLeft: 1, marginRight: 1, marginBlock: 1, p: 1 }} 
             onMouseEnter={() => props.showTooltip(props.index, props.isHazardous)} 
             onMouseLeave={() => props.hideTooltip()}
         >
