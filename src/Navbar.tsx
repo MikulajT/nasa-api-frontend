@@ -10,7 +10,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import { Typography } from '@mui/material';
 import { SvgIcon } from '@mui/material';
 import { ReactComponent as NasaLogo } from './assets/nasa.svg';
 
@@ -29,7 +28,9 @@ function ResponsiveAppBar() {
     <AppBar position="static" sx={{ bgcolor: "#2B333D" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <SvgIcon component={NasaLogo} sx={{ display: { xs: 'none', md: 'flex', fontSize: 60 }, mr: 1 }} inheritViewBox />
+          <Link href="/">
+            <SvgIcon component={NasaLogo} sx={{ display: { xs: 'none', md: 'flex', fontSize: 60 }, mr: 1 }} inheritViewBox />
+          </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -67,7 +68,9 @@ function ResponsiveAppBar() {
               </MenuItem>
             </Menu>
           </Box>
-          <SvgIcon component={NasaLogo} sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, fontSize: 60 }}  inheritViewBox />
+          <Link href="/">
+            <SvgIcon component={NasaLogo} sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, fontSize: 60 }}  inheritViewBox />
+          </Link>   
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
           <Button
             component={RouterLink} 
