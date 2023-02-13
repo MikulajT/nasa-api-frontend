@@ -15,7 +15,7 @@ const NeoEntry: React.FC<ChildProps> = (props) => {
     return (
         <Box 
             className="box-border"
-            sx={{ border: 1, borderColor: 'text.primary', marginLeft: 1, marginRight: 1, marginBlock: 1, p: 1 }} 
+            sx={{ border: 1, borderColor: 'text.primary', margin: 1, p: 1 }} 
             onMouseEnter={() => props.showTooltip(props.index, props.isHazardous)} 
             onMouseLeave={() => props.hideTooltip()}
         >
@@ -27,7 +27,7 @@ const NeoEntry: React.FC<ChildProps> = (props) => {
             </Typography>
             <Tooltip title="Distance from earth">
                 <Typography variant="body1" sx={{display: 'inline'}}>
-                    DFE: 
+                    DFE:&nbsp; 
                 </Typography>
             </Tooltip> 
             <Typography variant="body1" sx={{display: 'inline'}}>

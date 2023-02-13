@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { AdapterDayjs  } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs, { Dayjs } from 'dayjs';
 import {TextField, Stack, Button, Container} from '@mui/material';
@@ -85,6 +85,7 @@ const Neo = () => {
   const [errorOccured, setErrorOccured] = useState<boolean>(false);
   const [fromDate, setFromDate] = useState<Dayjs | null>(dayjs());
   const [toDate, setToDate] = useState<Dayjs | null>(dayjs());
+  const [isErrorDate, setIsErrorDate] = useState<boolean>(false);
 
   const data = {
     datasets: [
@@ -191,12 +192,13 @@ const Neo = () => {
 
   const neoHeader = <>
     <Typography variant='h2' align='center'>Near-Earth Objects</Typography>
-    <LocalizationProvider dateAdapter={AdapterMoment}>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Stack direction="row" justifyContent='center' spacing={4} sx={{mt: 2, mb: 2}}>
         <DesktopDatePicker
           label="From"
           inputFormat="DD-MM-YYYY"
           value={fromDate}
+          maxDate={toDate!} // Doesn't work
           onChange={handleFromDateChange}
           renderInput={(params) => <TextField {...params} />}
         />
@@ -204,8 +206,22 @@ const Neo = () => {
           label="To"
           inputFormat="DD-MM-YYYY"
           value={toDate}
+          minDate={fromDate!} // Doesn't work
+          maxDate={fromDate?.add(6, 'day')} // Doesn't work
           onChange={handleToDateChange}
-          renderInput={(params) => <TextField {...params} />}
+          onError={(reason, value) => {
+            if (reason) {
+              setIsErrorDate(true);
+            } else {
+              setIsErrorDate(false);
+            }
+          }}
+          renderInput={(params) => 
+          <TextField 
+            {...params} 
+            error={isErrorDate} 
+            helperText= {isErrorDate ? "Maximum timespan between from and to date is 7 days" : ""} 
+          />}
         />
         <Button variant="contained" onClick={updateChart}>Refresh</Button>
       </Stack>
