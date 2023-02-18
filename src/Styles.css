@@ -25,3 +25,7 @@
 .left-blue-corner {
     border-left: solid #191970 0.5rem !important;
 }
+
+.m-1 {
+    margin: 8px !important;
+}
