@@ -98,7 +98,8 @@ const Neo = () => {
       data: neo.filter((obj) => {
         return obj.isPotentiallyHazardousAsteroid;
       }),
-      backgroundColor: 'rgb(255, 99, 132)'
+      backgroundColor: 'rgb(255, 99, 132)',
+      hitRadius: 10
     },
     {
       label: 'Not hazardous',
@@ -107,6 +108,7 @@ const Neo = () => {
         return !obj.isPotentiallyHazardousAsteroid;
       }),
       backgroundColor: 'rgb(25, 25, 112)',
+      hitRadius: 10
     },
   ]
   };
