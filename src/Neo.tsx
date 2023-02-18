@@ -13,6 +13,7 @@ import {
   TimeScale
 } from 'chart.js';
 import type { ChartOptions, TooltipModel, ChartArea } from 'chart.js';
+import { horizontalArbitraryLine } from './ChartJsPluhgins/HorizontalArbitraryLine';
 import { Bubble } from 'react-chartjs-2';
 import { Typography } from '@mui/material';
 import LoadingEllipsis from './LoadingEllipsis';
@@ -36,7 +37,7 @@ interface INeoApiResponse {
   isPotentiallyHazardousAsteroid: boolean;
 }
 
-Chart.register(TimeScale, LinearScale, PointElement, Tooltip, Legend);
+Chart.register(TimeScale, LinearScale, PointElement, Tooltip, Legend, horizontalArbitraryLine);
 
 export const options: ChartOptions<'bubble'> = {
   scales: {
@@ -73,7 +74,10 @@ export const options: ChartOptions<'bubble'> = {
                     return labelText;
                 }
             }
-        }
+        },
+        horizontalArbitraryLine: {
+          lineColor: "black",
+      }
     }
 };
 
