@@ -15,7 +15,7 @@ import {
   ActiveElement
 } from 'chart.js';
 import type { ChartOptions, TooltipModel, ChartArea } from 'chart.js';
-import { horizontalArbitraryLine } from './ChartJsPluhgins/HorizontalArbitraryLine';
+import { bubbleOutline } from './ChartJsPlugins/BubbleOutline';
 import { Bubble } from 'react-chartjs-2';
 import { Typography } from '@mui/material';
 import LoadingEllipsis from './LoadingEllipsis';
@@ -52,7 +52,7 @@ const Neo = () => {
   const [isErrorDate, setIsErrorDate] = useState<boolean>(false);
   const [highlightedNeoIndex, setHighlightedNeoIndex] = useState<number>(-1);
 
-  Chart.register(TimeScale, LinearScale, PointElement, Tooltip, Legend, horizontalArbitraryLine);
+  Chart.register(TimeScale, LinearScale, PointElement, Tooltip, Legend, bubbleOutline);
 
   const options: ChartOptions<'bubble'> = {
     scales: {
@@ -106,7 +106,7 @@ const Neo = () => {
                   }
               }
           },
-          horizontalArbitraryLine: {
+          bubbleOutline: {
             lineColor: "black",
         }
       }

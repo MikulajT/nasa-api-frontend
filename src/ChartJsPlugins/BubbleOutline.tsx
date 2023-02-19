@@ -1,7 +1,7 @@
 import { Plugin } from "chart.js";
 
-export const horizontalArbitraryLine: Plugin = {
-    id: "horizontalArbitraryLine",
+export const bubbleOutline: Plugin = {
+    id: "bubbleOutline",
     afterDraw: c => {
         let datasets = c.data.datasets;
         datasets.forEach((e, i) => {
