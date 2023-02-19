@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, ReactElement} from 'react';
+import { flushSync } from 'react-dom'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs  } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
@@ -10,7 +11,8 @@ import {
   PointElement,
   Tooltip,
   Legend,
-  TimeScale
+  TimeScale,
+  ActiveElement
 } from 'chart.js';
 import type { ChartOptions, TooltipModel, ChartArea } from 'chart.js';
 import { horizontalArbitraryLine } from './ChartJsPluhgins/HorizontalArbitraryLine';
@@ -27,6 +29,7 @@ interface INeo {
   r: number;
   isPotentiallyHazardousAsteroid: boolean;
   name: string;
+  neoEntryIndex: number;
 };
 
 interface INeoApiResponse {
@@ -37,52 +40,9 @@ interface INeoApiResponse {
   isPotentiallyHazardousAsteroid: boolean;
 }
 
-Chart.register(TimeScale, LinearScale, PointElement, Tooltip, Legend, horizontalArbitraryLine);
-
-export const options: ChartOptions<'bubble'> = {
-  scales: {
-    x: {
-      type: 'time',
-      time: {
-        unit: 'day'
-      },
-      title: {
-        display: true,
-        text: 'Date',
-        font: {
-          size: 16,
-        }
-      }
-    },
-    y: {
-      beginAtZero: true,
-      title: {
-        display: true,
-        text: 'Distance from Earth (km)',
-        font: {
-          size: 16,
-        }
-      }
-    }
-  },
-    plugins: {
-        tooltip: {
-            callbacks: {
-                label: function(context) {
-                    const neo = context.raw as INeo;
-                    const labelText: string[] = [`Name: ${neo.name}`, `Date: ${neo.x}`, `Distance from Earth: ${neo.y} (km)`];
-                    return labelText;
-                }
-            }
-        },
-        horizontalArbitraryLine: {
-          lineColor: "black",
-      }
-    }
-};
-
 const Neo = () => {
   const chartRef = useRef<Chart>();
+  const neoListRef = useRef<HTMLElement>();
   const emptyNeo = [] as INeo[];
   const [neo, setNeo] = useState<INeo[]>(emptyNeo);
   const [isNeoLoaded, setIsNeoLoaded] = useState<boolean>(false);
@@ -90,6 +50,67 @@ const Neo = () => {
   const [fromDate, setFromDate] = useState<Dayjs | null>(dayjs());
   const [toDate, setToDate] = useState<Dayjs | null>(dayjs());
   const [isErrorDate, setIsErrorDate] = useState<boolean>(false);
+  const [highlightedNeoIndex, setHighlightedNeoIndex] = useState<number>(-1);
+
+  Chart.register(TimeScale, LinearScale, PointElement, Tooltip, Legend, horizontalArbitraryLine);
+
+  const options: ChartOptions<'bubble'> = {
+    scales: {
+      x: {
+        type: 'time',
+        time: {
+          unit: 'day'
+        },
+        title: {
+          display: true,
+          text: 'Date',
+          font: {
+            size: 16,
+          }
+        }
+      },
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Distance from Earth (km)',
+          font: {
+            size: 16,
+          }
+        }
+      }
+    },
+    onHover: function (e, items : ActiveElement[]) {
+      if (items.length == 1) {
+
+        //Casting to any is not a good practise (it avoids features which TS provides)
+        const activeElement = items[0].element as any;
+
+        const bubbleData = activeElement.$context.raw as INeo; 
+        neoListRef.current?.children[bubbleData.neoEntryIndex].scrollIntoView();
+        flushSync(() => {
+          setHighlightedNeoIndex(bubbleData.neoEntryIndex);
+        })
+      }
+      else if (highlightedNeoIndex != -1) {
+        setHighlightedNeoIndex(-1);
+      }
+    },
+      plugins: {
+          tooltip: {
+              callbacks: {
+                  label: function(context) {
+                      const neo = context.raw as INeo;
+                      const labelText: string[] = [`Name: ${neo.name}`, `Date: ${neo.x}`, `Distance from Earth: ${neo.y} (km)`];
+                      return labelText;
+                  }
+              }
+          },
+          horizontalArbitraryLine: {
+            lineColor: "black",
+        }
+      }
+  };
 
   const data = {
     datasets: [
@@ -122,13 +143,14 @@ const Neo = () => {
     let response = await fetch(`http://localhost:5076/api/neo?startDate=${fromDate?.format('MM-DD-YYYY')}&endDate=${toDate?.format('MM-DD-YYYY')}`);
     if (response.ok) {
       const data : INeoApiResponse[] = await response.json();
-      const neos : INeo[] = data.map(obj => (
+      const neos : INeo[] = data.map((obj, index) => (
         { 
           x: obj.closeApproachDateFull,
           y: obj.missDistance,
           r: obj.estimatedDiameter,
           isPotentiallyHazardousAsteroid: obj.isPotentiallyHazardousAsteroid,  
-          name: obj.name    
+          name: obj.name,
+          neoEntryIndex: index
         }
         ))
       setIsNeoLoaded(true);
@@ -189,6 +211,7 @@ const Neo = () => {
         distanceFromEarth={neo[i].y }
         diameter={neo[i].r} 
         isHazardous={neo[i].isPotentiallyHazardousAsteroid}
+        highlightTooltip={i == highlightedNeoIndex}
         showTooltip={showTooltip}
         hideTooltip={hideTooltip}
       />);
@@ -256,7 +279,7 @@ const Neo = () => {
         {neoHeader}
         <Container maxWidth="xl">
           <Stack direction="row">
-            <Stack direction="column" spacing={2} sx={{width: '20vw', height: '70vh', overflow: 'auto'}}>
+            <Stack direction="column" spacing={2} sx={{width: '20vw', height: '70vh', overflow: 'auto'}} ref={neoListRef}>
               {createNeoList()}
             </Stack>
             <Box sx={{width: '70vw'}}>

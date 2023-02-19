@@ -7,6 +7,7 @@ interface ChildProps {
     distanceFromEarth: number,
     diameter: number,
     isHazardous: boolean,
+    highlightTooltip: boolean,
     showTooltip(index: number, isHazardous: boolean): void,
     hideTooltip(): void
  }
@@ -21,7 +22,7 @@ const NeoEntry: React.FC<ChildProps> = (props) => {
 
     return (
         <Box 
-            className={`box-border m-1 p-1 ${props.isHazardous ? "left-pink-corner" : "left-blue-corner"}`}
+            className={`m-1 p-1 box-border ${props.isHazardous ? "left-pink-corner" : "left-blue-corner"} ${props.highlightTooltip ? "box-shadow" : ""}`}
             sx={{ border: 1, borderColor: 'text.primary', p: 1 }} 
             onMouseEnter={() => props.showTooltip(props.index, props.isHazardous)} 
             onMouseLeave={() => props.hideTooltip()}
