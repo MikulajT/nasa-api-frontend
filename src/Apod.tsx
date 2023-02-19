@@ -1,15 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Typography } from '@mui/material';
 import { Container, Box } from '@mui/system';
+import { IApod } from './interfaces/IApod';
 import LoadingEllipsis from './LoadingEllipsis';
-
-interface IApod {
-  hdurl: string;
-  date: string;
-  copyright: string;
-  explanation: string;
-  title: string;
-};
 
 function App() {
   const emptyApod = {} as IApod;

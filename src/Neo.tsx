@@ -15,30 +15,15 @@ import {
   ActiveElement
 } from 'chart.js';
 import type { ChartOptions, TooltipModel, ChartArea } from 'chart.js';
-import { bubbleOutline } from './ChartJsPlugins/BubbleOutline';
+import { bubbleOutline } from './chartJsPlugins/BubbleOutline';
 import { Bubble } from 'react-chartjs-2';
 import { Typography } from '@mui/material';
-import LoadingEllipsis from './LoadingEllipsis';
-import NeoEntry from './NeoEntry';
 import 'chartjs-adapter-moment';
 import { Box } from '@mui/system';
-
-interface INeo {
-  x: string;
-  y: number;
-  r: number;
-  isPotentiallyHazardousAsteroid: boolean;
-  name: string;
-  neoEntryIndex: number;
-};
-
-interface INeoApiResponse {
-  name: string;
-  closeApproachDateFull: string;
-  missDistance: number;
-  estimatedDiameter: number;
-  isPotentiallyHazardousAsteroid: boolean;
-}
+import LoadingEllipsis from './LoadingEllipsis';
+import NeoEntry from './NeoEntry';
+import { INeo } from './interfaces/INeo';
+import { INeoApiResponse } from './interfaces/INeoApiResponse';
 
 const Neo = () => {
   const chartRef = useRef<Chart>();
