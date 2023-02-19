@@ -25,7 +25,7 @@ import NeoEntry from './NeoEntry';
 import { INeo } from './interfaces/INeo';
 import { INeoApiResponse } from './interfaces/INeoApiResponse';
 
-const Neo = () => {
+function Neo() {
   const chartRef = useRef<Chart>();
   const neoListRef = useRef<HTMLElement>();
   const emptyNeo = [] as INeo[];
