@@ -1,129 +1,28 @@
-import { useState, useEffect, useRef, ReactElement} from 'react';
+import { useState, useRef } from 'react';
 import { flushSync } from 'react-dom'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs  } from '@mui/x-date-pickers/AdapterDayjs';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import dayjs, { Dayjs } from 'dayjs';
-import {TextField, Stack, Button, Container} from '@mui/material';
-import {
-  Chart,
-  LinearScale,
-  PointElement,
-  Tooltip,
-  Legend,
-  TimeScale,
-  ActiveElement
-} from 'chart.js';
-import type { ChartOptions, TooltipModel, ChartArea } from 'chart.js';
-import { bubbleOutline } from './chartJsPlugins/BubbleOutline';
-import { Bubble } from 'react-chartjs-2';
+import { Stack, Container } from '@mui/material';
+import { ActiveElement, ChartEvent } from 'chart.js';
 import { Typography } from '@mui/material';
 import 'chartjs-adapter-moment';
 import { Box } from '@mui/system';
+import { Dayjs } from 'dayjs';
 import LoadingEllipsis from './LoadingEllipsis';
 import NeoEntry from './NeoEntry';
+import FromToDatePicker from './FromToDatePicker';
 import { INeo } from './interfaces/INeo';
 import { INeoApiResponse } from './interfaces/INeoApiResponse';
+import { IBubbleIndex } from './interfaces/IBubbleIndex';
+import NeosBubbleChart from './NeosBubbleChart';
 
 function Neo() {
-  const chartRef = useRef<Chart>();
   const neoListRef = useRef<HTMLElement>();
-  const emptyNeo = [] as INeo[];
-  const [neo, setNeo] = useState<INeo[]>(emptyNeo);
-  const [isNeoLoaded, setIsNeoLoaded] = useState<boolean>(false);
+  const [neos, setNeos] = useState<INeo[]>([] as INeo[]);
+  const [isNeoLoaded, setIsNeoLoaded] = useState<boolean>(true);
   const [errorOccured, setErrorOccured] = useState<boolean>(false);
-  const [fromDate, setFromDate] = useState<Dayjs | null>(dayjs());
-  const [toDate, setToDate] = useState<Dayjs | null>(dayjs());
-  const [isErrorDate, setIsErrorDate] = useState<boolean>(false);
   const [highlightedNeoIndex, setHighlightedNeoIndex] = useState<number>(-1);
+  const [bubbleTooltipIndex, setBubbleTooltipIndex] = useState<IBubbleIndex>({datasetIndex: -1, index: -1});
 
-  Chart.register(TimeScale, LinearScale, PointElement, Tooltip, Legend, bubbleOutline);
-
-  const options: ChartOptions<'bubble'> = {
-    scales: {
-      x: {
-        type: 'time',
-        time: {
-          unit: 'day'
-        },
-        title: {
-          display: true,
-          text: 'Date',
-          font: {
-            size: 16,
-          }
-        }
-      },
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: 'Distance from Earth (km)',
-          font: {
-            size: 16,
-          }
-        }
-      }
-    },
-    onHover: function (e, items : ActiveElement[]) {
-      if (items.length == 1) {
-
-        //Casting to any is not a good practise (it avoids features which TS provides)
-        const activeElement = items[0].element as any;
-
-        const bubbleData = activeElement.$context.raw as INeo; 
-        neoListRef.current?.children[bubbleData.neoEntryIndex].scrollIntoView();
-        flushSync(() => {
-          setHighlightedNeoIndex(bubbleData.neoEntryIndex);
-        })
-      }
-      else if (highlightedNeoIndex != -1) {
-        setHighlightedNeoIndex(-1);
-      }
-    },
-      plugins: {
-          tooltip: {
-              callbacks: {
-                  label: function(context) {
-                      const neo = context.raw as INeo;
-                      const labelText: string[] = [`Name: ${neo.name}`, `Date: ${neo.x}`, `Distance from Earth: ${neo.y} (km)`];
-                      return labelText;
-                  }
-              }
-          },
-          bubbleOutline: {
-            lineColor: "black",
-        }
-      }
-  };
-
-  const data = {
-    datasets: [
-    {
-      label: 'Potentionally hazardous',
-      data: neo.filter((obj) => {
-        return obj.isPotentiallyHazardousAsteroid;
-      }),
-      backgroundColor: 'rgb(255, 99, 132)',
-      hitRadius: 10
-    },
-    {
-      label: 'Not hazardous',
-      data: neo.filter((obj) => 
-      {
-        return !obj.isPotentiallyHazardousAsteroid;
-      }),
-      backgroundColor: 'rgb(25, 25, 112)',
-      hitRadius: 10
-    },
-  ]
-  };
-
-  useEffect(() => {
-    fetchNeo();
-  }, []);
-
-  async function fetchNeo() {
+  async function fetchNeo(fromDate: Dayjs | null, toDate: Dayjs | null) {
     setIsNeoLoaded(false);
     let response = await fetch(`http://localhost:5076/api/neo?startDate=${fromDate?.format('MM-DD-YYYY')}&endDate=${toDate?.format('MM-DD-YYYY')}`);
     if (response.ok) {
@@ -140,63 +39,58 @@ function Neo() {
         ))
       setIsNeoLoaded(true);
       setErrorOccured(false);
-      setNeo(neos);
+      setNeos(neos);
     }
     else {
       setErrorOccured(true);
     }
   }
 
-  function handleFromDateChange(newValue: Dayjs | null) {
-    setFromDate(newValue);
-  };
+  function updateChart(fromDate: Dayjs | null, toDate: Dayjs | null) {
+    fetchNeo(fromDate, toDate);
+  }
 
-  function handleToDateChange(newValue: Dayjs | null) {
-    setToDate(newValue);
-  };
+  function handleBubbleHover(e : ChartEvent, items : ActiveElement[]) {
+    if (items.length === 1) {
 
-  function updateChart() {
-    fetchNeo();
+      //Casting to any is not a good practise (it avoids features which TS provides)
+      const activeElement = items[0].element as any;
+
+      const bubbleData = activeElement.$context.raw as INeo; 
+      neoListRef.current?.children[bubbleData.neoEntryIndex].scrollIntoView();
+      flushSync(() => {
+        setHighlightedNeoIndex(bubbleData.neoEntryIndex);
+      })
+    }
+    else if (highlightedNeoIndex !== -1) {
+      setHighlightedNeoIndex(-1);
+    }
   }
 
   function showTooltip(neoIndex: number, isHazardous: boolean) {
-    const tooltip = chartRef.current?.tooltip as TooltipModel;
-    const chartArea = chartRef.current?.chartArea as ChartArea;
-    tooltip.setActiveElements([
-      {
-        datasetIndex: isHazardous ? 0 : 1,
-        index: neoIndex,
-      }
-    ],
-    {
-      x: (chartArea.left + chartArea.right) / 2,
-      y: (chartArea.top + chartArea.bottom) / 2,
-    });
-    chartRef.current?.update();
+    setBubbleTooltipIndex({datasetIndex: isHazardous ? 0 : 1, index: neoIndex});
   }
 
   function hideTooltip() {
-    const tooltip = chartRef.current?.tooltip as TooltipModel;
-    tooltip.setActiveElements([], {x: 0, y: 0});
-    chartRef.current?.update();
+    setBubbleTooltipIndex({datasetIndex: -1, index: -1});
   }
 
   function createNeoList() : React.ReactElement[] {
     const neoList: React.ReactElement[] = [];
     let hazardousNeoIndex = 0;
     let notHazardousNeoIndex = 0;
-    for (let i = 0; i < neo.length; i++) {
-      let neoIndex = neo[i].isPotentiallyHazardousAsteroid ? hazardousNeoIndex++ : notHazardousNeoIndex++;
+    for (let i = 0; i < neos.length; i++) {
+      let neoIndex = neos[i].isPotentiallyHazardousAsteroid ? hazardousNeoIndex++ : notHazardousNeoIndex++;
       neoList.push(
       <NeoEntry 
         key={i} 
         index={neoIndex} 
-        name={neo[i].name} 
-        date={neo[i].x} 
-        distanceFromEarth={neo[i].y }
-        diameter={neo[i].r} 
-        isHazardous={neo[i].isPotentiallyHazardousAsteroid}
-        highlightTooltip={i == highlightedNeoIndex}
+        name={neos[i].name} 
+        date={neos[i].x} 
+        distanceFromEarth={neos[i].y }
+        diameter={neos[i].r} 
+        isHazardous={neos[i].isPotentiallyHazardousAsteroid}
+        highlightTooltip={i === highlightedNeoIndex}
         showTooltip={showTooltip}
         hideTooltip={hideTooltip}
       />);
@@ -206,40 +100,7 @@ function Neo() {
 
   const neoHeader = <>
     <Typography variant='h2' align='center'>Near-Earth Objects</Typography>
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Stack direction="row" justifyContent='center' spacing={4} sx={{mt: 2, mb: 2}}>
-        <DesktopDatePicker
-          label="From"
-          inputFormat="DD-MM-YYYY"
-          value={fromDate}
-          maxDate={toDate!} // Doesn't work
-          onChange={handleFromDateChange}
-          renderInput={(params) => <TextField {...params} />}
-        />
-        <DesktopDatePicker
-          label="To"
-          inputFormat="DD-MM-YYYY"
-          value={toDate}
-          minDate={fromDate!} // Doesn't work
-          maxDate={fromDate?.add(6, 'day')} // Doesn't work
-          onChange={handleToDateChange}
-          onError={(reason, value) => {
-            if (reason) {
-              setIsErrorDate(true);
-            } else {
-              setIsErrorDate(false);
-            }
-          }}
-          renderInput={(params) => 
-          <TextField 
-            {...params} 
-            error={isErrorDate} 
-            helperText= {isErrorDate ? "Maximum timespan between from and to date is 7 days" : ""} 
-          />}
-        />
-        <Button variant="contained" onClick={updateChart}>Refresh</Button>
-      </Stack>
-    </LocalizationProvider>
+    <FromToDatePicker updateChart={updateChart}/>
   </>
 
   if (errorOccured) {
@@ -268,7 +129,7 @@ function Neo() {
               {createNeoList()}
             </Stack>
             <Box sx={{width: '70vw'}}>
-              <Bubble options={options} data={data} ref={chartRef} />
+              <NeosBubbleChart neos={neos} bubbleTooltipIndex={bubbleTooltipIndex} handleBubbleHover={handleBubbleHover}/>
             </Box>
           </Stack>
         </Container>
