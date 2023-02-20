@@ -1,7 +1,7 @@
 import { Typography, Box, Tooltip, Link } from '@mui/material';
-import { INeoEntryChildProps } from './interfaces/INeoEntryChildProps';
+import { INeoEntryProps } from './interfaces/INeoEntryProps';
 
-const NeoEntry: React.FC<INeoEntryChildProps> = (props) => {
+const NeoEntry: React.FC<INeoEntryProps> = (props) => {
 
     function getNeoLink(neoName: string) : string {
         const neoNameWithoutCommas = neoName.slice(1,-1);

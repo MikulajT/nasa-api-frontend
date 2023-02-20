@@ -1,4 +1,4 @@
-export interface INeoEntryChildProps {
+export interface INeoEntryProps {
     index: number,
     name: string,
     date: string,
