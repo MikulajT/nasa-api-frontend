@@ -1,0 +1,27 @@
+.box-border {
+    border:3px solid #000000;
+    border-width:2px;
+    border-style:solid;
+    border-color:#000000;  
+    transition: 0.3s;  
+}
+
+.box-border:hover {
+    -webkit-box-shadow:0px 0px 5px 1px #1a1a1a ;
+    -moz-box-shadow:0px 0px 5px 1px #1a1a1a ;
+    box-shadow:0px 0px 5px 1px #1a1a1a ;
+}
+
+.box-shadow {
+    -webkit-box-shadow:0px 0px 5px 1px #1a1a1a ;
+    -moz-box-shadow:0px 0px 5px 1px #1a1a1a ;
+    box-shadow:0px 0px 5px 1px #1a1a1a ;
+}
+
+.left-pink-corner {
+    border-left: solid #ff6384 0.5rem !important;
+}
+
+.left-blue-corner {
+    border-left: solid #191970 0.5rem !important;
+}

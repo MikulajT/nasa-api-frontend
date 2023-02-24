@@ -125,7 +125,17 @@ function Neo() {
         {neoHeader}
         <Container maxWidth="xl">
           <Stack direction="row">
-            <Stack direction="column" spacing={2} sx={{width: "20vw", height: "70vh", overflow: "auto"}} ref={neoListRef}>
+            <Stack 
+              direction="column" 
+              spacing={2} 
+              sx={{width: "20vw", 
+                height: "70vh", 
+                overflow: "auto",
+                marginRight: 1, 
+                border: 1, 
+                borderRadius: 1, 
+                borderColor: 'grey.500'}}
+              ref={neoListRef}>
               {createNeoList()}
             </Stack>
             <Box sx={{width: "70vw"}}>

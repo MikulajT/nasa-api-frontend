@@ -1,5 +1,6 @@
 import { Typography, Box, Tooltip, Link } from "@mui/material";
 import { INeoEntryProps } from "./interfaces/INeoEntryProps";
+import "./styles/NeoEntry.css";
 
 const NeoEntry: React.FC<INeoEntryProps> = (props) => {
 

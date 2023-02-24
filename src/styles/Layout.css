@@ -1,0 +1,22 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+#root {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+#root header {
+    flex: 0 1 auto;
+}
+  
+#root main {
+    flex: 1 1 auto;
+}
+
+.m-1 {
+    margin: 8px !important;
+}

@@ -3,6 +3,7 @@ import { Typography } from "@mui/material";
 import { Container, Box } from "@mui/system";
 import { IApod } from "./interfaces/IApod";
 import LoadingEllipsis from "./LoadingEllipsis";
+import "./styles/Apod.css";
 
 function App() {
   const emptyApod = {} as IApod;
