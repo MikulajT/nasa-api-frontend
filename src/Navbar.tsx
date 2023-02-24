@@ -1,17 +1,17 @@
-import * as React from 'react';
-import { Link as RouterLink} from 'react-router-dom';
-import { Link } from '@mui/material';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
-import { SvgIcon } from '@mui/material';
-import { ReactComponent as NasaLogo } from './assets/nasa.svg';
+import * as React from "react";
+import { Link as RouterLink} from "react-router-dom";
+import { Link } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import { SvgIcon } from "@mui/material";
+import { ReactComponent as NasaLogo } from "./assets/nasa.svg";
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -29,9 +29,9 @@ function ResponsiveAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Link href="/">
-            <SvgIcon component={NasaLogo} sx={{ display: { xs: 'none', md: 'flex', fontSize: 60 }, mr: 1 }} inheritViewBox />
+            <SvgIcon component={NasaLogo} sx={{ display: { xs: "none", md: "flex", fontSize: 60 }, mr: 1 }} inheritViewBox />
           </Link>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -46,37 +46,37 @@ function ResponsiveAppBar() {
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: "block", md: "none" },
               }}
             >
               <MenuItem onClick={handleCloseNavMenu}>
-                <Link href="/apod" sx={{color: 'black'}} textAlign="center" underline='none'>APOD</Link>
+                <Link href="/apod" sx={{color: "black"}} textAlign="center" underline="none">APOD</Link>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
-                <Link href="/neo" sx={{color: 'black'}} textAlign="center" underline='none'>NEO</Link>
+                <Link href="/neo" sx={{color: "black"}} textAlign="center" underline="none">NEO</Link>
               </MenuItem>
             </Menu>
           </Box>
           <Link href="/">
-            <SvgIcon component={NasaLogo} sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, fontSize: 60 }}  inheritViewBox />
+            <SvgIcon component={NasaLogo} sx={{ display: { xs: "flex", md: "none" }, mr: 1, fontSize: 60 }}  inheritViewBox />
           </Link>   
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
           <Button
             component={RouterLink} 
             to="/apod"
             onClick={handleCloseNavMenu}
-            sx={{ my: 2, color: 'white', display: 'block' }}
+            sx={{ my: 2, color: "white", display: "block" }}
           >
             APOD
           </Button>
@@ -84,7 +84,7 @@ function ResponsiveAppBar() {
             component={RouterLink} 
             to="/neo"
             onClick={handleCloseNavMenu}
-            sx={{ my: 2, color: 'white', display: 'block' }}
+            sx={{ my: 2, color: "white", display: "block" }}
           >
             NEO
           </Button>

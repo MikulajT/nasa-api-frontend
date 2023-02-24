@@ -1,18 +1,18 @@
-import { useState, useRef } from 'react';
-import { flushSync } from 'react-dom'
-import { Stack, Container } from '@mui/material';
-import { ActiveElement, ChartEvent } from 'chart.js';
-import { Typography } from '@mui/material';
-import 'chartjs-adapter-moment';
-import { Box } from '@mui/system';
-import { Dayjs } from 'dayjs';
-import LoadingEllipsis from './LoadingEllipsis';
-import NeoEntry from './NeoEntry';
-import FromToDatePicker from './FromToDatePicker';
-import { INeo } from './interfaces/INeo';
-import { INeoApiResponse } from './interfaces/INeoApiResponse';
-import { IBubbleIndex } from './interfaces/IBubbleIndex';
-import NeosBubbleChart from './NeosBubbleChart';
+import { useState, useRef } from "react";
+import { flushSync } from "react-dom"
+import { Stack, Container } from "@mui/material";
+import { ActiveElement, ChartEvent } from "chart.js";
+import { Typography } from "@mui/material";
+import "chartjs-adapter-moment";
+import { Box } from "@mui/system";
+import { Dayjs } from "dayjs";
+import LoadingEllipsis from "./LoadingEllipsis";
+import NeoEntry from "./NeoEntry";
+import FromToDatePicker from "./FromToDatePicker";
+import { INeo } from "./interfaces/INeo";
+import { INeoApiResponse } from "./interfaces/INeoApiResponse";
+import { IBubbleIndex } from "./interfaces/IBubbleIndex";
+import NeosBubbleChart from "./NeosBubbleChart";
 
 function Neo() {
   const neoListRef = useRef<HTMLElement>();
@@ -24,7 +24,7 @@ function Neo() {
 
   async function fetchNeo(fromDate: Dayjs | null, toDate: Dayjs | null) {
     setIsNeoLoaded(false);
-    let response = await fetch(`http://localhost:5076/api/neo?startDate=${fromDate?.format('MM-DD-YYYY')}&endDate=${toDate?.format('MM-DD-YYYY')}`);
+    let response = await fetch(`http://localhost:5076/api/neo?startDate=${fromDate?.format("MM-DD-YYYY")}&endDate=${toDate?.format("MM-DD-YYYY")}`);
     if (response.ok) {
       const data : INeoApiResponse[] = await response.json();
       const neos : INeo[] = data.map((obj, index) => (
@@ -99,7 +99,7 @@ function Neo() {
   }
 
   const neoHeader = <>
-    <Typography variant='h2' align='center'>Near-Earth Objects</Typography>
+    <Typography variant="h2" align="center">Near-Earth Objects</Typography>
     <FromToDatePicker updateChart={updateChart}/>
   </>
 
@@ -107,7 +107,7 @@ function Neo() {
     return (
       <>
         {neoHeader}
-        <Typography variant='h2' align='center'>Error occured when calling API 😕</Typography>
+        <Typography variant="h2" align="center">Error occured when calling API 😕</Typography>
       </>
     );
   }
@@ -125,10 +125,10 @@ function Neo() {
         {neoHeader}
         <Container maxWidth="xl">
           <Stack direction="row">
-            <Stack direction="column" spacing={2} sx={{width: '20vw', height: '70vh', overflow: 'auto'}} ref={neoListRef}>
+            <Stack direction="column" spacing={2} sx={{width: "20vw", height: "70vh", overflow: "auto"}} ref={neoListRef}>
               {createNeoList()}
             </Stack>
-            <Box sx={{width: '70vw'}}>
+            <Box sx={{width: "70vw"}}>
               <NeosBubbleChart neos={neos} bubbleTooltipIndex={bubbleTooltipIndex} handleBubbleHover={handleBubbleHover}/>
             </Box>
           </Stack>

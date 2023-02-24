@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect } from "react";
 import { INeosBubbleChartProps } from "./interfaces/INeosBubbleChartProps"
 import {
     Chart,
@@ -10,9 +10,9 @@ import {
     ChartOptions,
     TooltipModel,
     ChartArea
-  } from 'chart.js';
-import { Bubble } from 'react-chartjs-2';
-import { bubbleOutline } from './chartJsPlugins/BubbleOutline';
+  } from "chart.js";
+import { Bubble } from "react-chartjs-2";
+import { bubbleOutline } from "./chartJsPlugins/BubbleOutline";
 import { INeo } from "./interfaces/INeo";
 
 const NeosBubbleChart: React.FC<INeosBubbleChartProps> = (props) => {  
@@ -42,16 +42,16 @@ const NeosBubbleChart: React.FC<INeosBubbleChartProps> = (props) => {
         }
     }, [props.bubbleTooltipIndex]);
 
-    const options: ChartOptions<'bubble'> = {
+    const options: ChartOptions<"bubble"> = {
         scales: {
         x: {
-            type: 'time',
+            type: "time",
             time: {
-            unit: 'day'
+            unit: "day"
             },
             title: {
             display: true,
-            text: 'Date',
+            text: "Date",
             font: {
                 size: 16,
             }
@@ -61,7 +61,7 @@ const NeosBubbleChart: React.FC<INeosBubbleChartProps> = (props) => {
             beginAtZero: true,
             title: {
             display: true,
-            text: 'Distance from Earth (km)',
+            text: "Distance from Earth (km)",
             font: {
                 size: 16,
             }
@@ -88,20 +88,20 @@ const NeosBubbleChart: React.FC<INeosBubbleChartProps> = (props) => {
     const data = {
         datasets: [
             {
-            label: 'Potentionally hazardous',
+            label: "Potentionally hazardous",
             data: props.neos.filter((obj) => {
                 return obj.isPotentiallyHazardousAsteroid;
             }),
-            backgroundColor: 'rgb(255, 99, 132)',
+            backgroundColor: "rgb(255, 99, 132)",
             hitRadius: 10
             },
             {
-            label: 'Not hazardous',
+            label: "Not hazardous",
             data: props.neos.filter((obj) => 
             {
                 return !obj.isPotentiallyHazardousAsteroid;
             }),
-            backgroundColor: 'rgb(25, 25, 112)',
+            backgroundColor: "rgb(25, 25, 112)",
             hitRadius: 10
             },
         ]

@@ -1,6 +1,6 @@
-import {ChartType, Plugin} from 'chart.js';
+import {ChartType, Plugin} from "chart.js";
 
-declare module 'chart.js' {
+declare module "chart.js" {
   interface PluginOptionsByType<TType extends ChartType> {
     bubbleOutline?: {
       lineColor?: string

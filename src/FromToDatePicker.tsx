@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import {TextField, Stack, Button} from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs  } from '@mui/x-date-pickers/AdapterDayjs';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import dayjs, { Dayjs } from 'dayjs';
-import { IFromToDatePicker } from './interfaces/IFromToDatePicker';
+import { useState } from "react";
+import {TextField, Stack, Button} from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs  } from "@mui/x-date-pickers/AdapterDayjs";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import dayjs, { Dayjs } from "dayjs";
+import { IFromToDatePicker } from "./interfaces/IFromToDatePicker";
 
 const FromToDatePicker: React.FC<IFromToDatePicker> = (props) => {
     const [fromDate, setFromDate] = useState<Dayjs | null>(dayjs());
@@ -13,7 +13,7 @@ const FromToDatePicker: React.FC<IFromToDatePicker> = (props) => {
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Stack direction="row" justifyContent='center' spacing={4} sx={{mt: 2, mb: 2}}>
+        <Stack direction="row" justifyContent="center" spacing={4} sx={{mt: 2, mb: 2}}>
           <DesktopDatePicker
             label="From"
             inputFormat="DD-MM-YYYY"
@@ -27,7 +27,7 @@ const FromToDatePicker: React.FC<IFromToDatePicker> = (props) => {
             inputFormat="DD-MM-YYYY"
             value={toDate}
             minDate={fromDate!}
-            maxDate={fromDate?.add(6, 'day')}
+            maxDate={fromDate?.add(6, "day")}
             onChange={(newValue) => setToDate(newValue)}
             onError={(reason, value) => {
               if (reason) {

@@ -1,5 +1,5 @@
-import { Typography, Box, Tooltip, Link } from '@mui/material';
-import { INeoEntryProps } from './interfaces/INeoEntryProps';
+import { Typography, Box, Tooltip, Link } from "@mui/material";
+import { INeoEntryProps } from "./interfaces/INeoEntryProps";
 
 const NeoEntry: React.FC<INeoEntryProps> = (props) => {
 
@@ -12,7 +12,7 @@ const NeoEntry: React.FC<INeoEntryProps> = (props) => {
     return (
         <Box 
             className={`m-1 p-1 box-border ${props.isHazardous ? "left-pink-corner" : "left-blue-corner"} ${props.highlightTooltip ? "box-shadow" : ""}`}
-            sx={{ border: 1, borderColor: 'text.primary', p: 1 }} 
+            sx={{ border: 1, borderColor: "text.primary", p: 1 }} 
             onMouseEnter={() => props.showTooltip(props.index, props.isHazardous)} 
             onMouseLeave={() => props.hideTooltip()}
         >
@@ -26,11 +26,11 @@ const NeoEntry: React.FC<INeoEntryProps> = (props) => {
                 Date: {props.date}
             </Typography>
             <Tooltip title="Distance from earth">
-                <Typography variant="body1" sx={{display: 'inline'}}>
+                <Typography variant="body1" sx={{display: "inline"}}>
                     DFE:&nbsp; 
                 </Typography>
             </Tooltip> 
-            <Typography variant="body1" sx={{display: 'inline'}}>
+            <Typography variant="body1" sx={{display: "inline"}}>
                     {props.distanceFromEarth} km
             </Typography>
             <Typography variant="body1">
