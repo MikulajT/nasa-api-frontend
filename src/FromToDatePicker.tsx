@@ -29,7 +29,7 @@ const FromToDatePicker: React.FC<IFromToDatePicker> = (props) => {
             minDate={fromDate!}
             maxDate={fromDate?.add(6, "day")}
             onChange={(newValue) => setToDate(newValue)}
-            onError={(reason, value) => {
+            onError={(reason) => {
               if (reason) {
                 setIsErrorDate(true);
               } else {
@@ -43,7 +43,7 @@ const FromToDatePicker: React.FC<IFromToDatePicker> = (props) => {
               helperText= {isErrorDate ? "Maximum timespan between from and to date is 7 days" : ""} 
             />}
           />  
-          <Button variant="contained" onClick={() => props.updateChart(fromDate, toDate)}>Refresh</Button>    
+          <Button variant="contained" disabled={isErrorDate} sx={{height: "56px"}} onClick={() => props.updateChart(fromDate, toDate)}>Refresh</Button>    
         </Stack>
       </LocalizationProvider>
     ); 
