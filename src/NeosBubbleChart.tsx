@@ -108,7 +108,7 @@ const NeosBubbleChart: React.FC<INeosBubbleChartProps> = (props) => {
     };
 
     return (
-    <Bubble options={options} data={data} ref={chartRef} />
+        <Bubble options={options} data={data} ref={chartRef} />
     );
 }
 

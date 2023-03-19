@@ -1,4 +1,5 @@
 import { Typography, Box, Tooltip, Link } from "@mui/material";
+import dayjs  from "dayjs";
 import { INeoEntryProps } from "./interfaces/INeoEntryProps";
 import "./styles/NeoEntry.css";
 
@@ -24,7 +25,7 @@ const NeoEntry: React.FC<INeoEntryProps> = (props) => {
                 </Link>
             </Typography>
             <Typography variant="body1">
-                Date: {props.date}
+                Date: {dayjs(props.date).format('DD/MM/YYYY HH:mm:ss')}
             </Typography>
             <Tooltip title="Distance from earth">
                 <Typography variant="body1" sx={{display: "inline"}}>
@@ -35,7 +36,7 @@ const NeoEntry: React.FC<INeoEntryProps> = (props) => {
                     {props.distanceFromEarth} km
             </Typography>
             <Typography variant="body1">
-                Diameter: {props.diameter} km
+                Diameter: {props.diameter * 1000} m
             </Typography>
         </Box>
       );
