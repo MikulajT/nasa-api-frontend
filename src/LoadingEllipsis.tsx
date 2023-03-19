@@ -1,4 +1,4 @@
-import "./LoadingEllipsis.css";
+import "./styles/LoadingEllipsis.css";
 
 function LoadingEllipsis() {
     return (

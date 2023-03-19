@@ -2,7 +2,7 @@ import { useState } from "react";
 import {TextField, Stack, Button} from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs  } from "@mui/x-date-pickers/AdapterDayjs";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import { IFromToDatePicker } from "./interfaces/IFromToDatePicker";
 
@@ -13,8 +13,13 @@ const FromToDatePicker: React.FC<IFromToDatePicker> = (props) => {
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Stack direction="row" justifyContent="center" spacing={4} sx={{mt: 2, mb: 2}}>
-          <DesktopDatePicker
+        <Stack 
+          direction={{ xs: "column", sm: "row" }}
+          justifyContent="center" 
+          spacing={{ xs: 1, sm: 2, md: 4 }} 
+          sx={{mt: 2, mb: 2}}
+        >
+          <DatePicker
             label="From"
             inputFormat="DD-MM-YYYY"
             value={fromDate}
@@ -22,7 +27,7 @@ const FromToDatePicker: React.FC<IFromToDatePicker> = (props) => {
             onChange={(newValue) => setFromDate(newValue)}
             renderInput={(params) => <TextField {...params} />}
           />
-          <DesktopDatePicker
+          <DatePicker
             label="To"
             inputFormat="DD-MM-YYYY"
             value={toDate}

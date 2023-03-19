@@ -1,10 +1,11 @@
 .lds-ellipsis {
-  position: relative;
   width: 160px;
-  height: 160px;
-  margin: auto;
-  display: block;
-  margin-top: 40vh;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 .lds-ellipsis div {
   position: absolute;

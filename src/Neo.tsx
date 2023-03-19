@@ -1,26 +1,23 @@
 import { useState, useRef } from "react";
 import { flushSync } from "react-dom"
-import { Stack, Container } from "@mui/material";
+import { Container, useMediaQuery } from "@mui/material";
 import { ActiveElement, ChartEvent } from "chart.js";
-import { Typography } from "@mui/material";
 import "chartjs-adapter-moment";
-import { Box } from "@mui/system";
 import { Dayjs } from "dayjs";
-import LoadingEllipsis from "./LoadingEllipsis";
 import NeoEntry from "./NeoEntry";
-import FromToDatePicker from "./FromToDatePicker";
 import { INeo } from "./interfaces/INeo";
 import { INeoApiResponse } from "./interfaces/INeoApiResponse";
 import { IBubbleIndex } from "./interfaces/IBubbleIndex";
-import NeosBubbleChart from "./NeosBubbleChart";
+import NeoMediumScreen from "./NeoMediumScreen";
+import NeoSmallScreen from "./NeoSmallScreen";
 
 function Neo() {
-  const neoListRef = useRef<HTMLElement>();
   const [neos, setNeos] = useState<INeo[]>([] as INeo[]);
   const [isNeoLoaded, setIsNeoLoaded] = useState<boolean>(true);
   const [errorOccured, setErrorOccured] = useState<boolean>(false);
   const [highlightedNeoIndex, setHighlightedNeoIndex] = useState<number>(-1);
   const [bubbleTooltipIndex, setBubbleTooltipIndex] = useState<IBubbleIndex>({datasetIndex: -1, index: -1});
+  const mediumScreen = useMediaQuery("(min-width:900px)");
 
   async function fetchNeo(fromDate: Dayjs | null, toDate: Dayjs | null) {
     setIsNeoLoaded(false);
@@ -46,7 +43,7 @@ function Neo() {
     }
   }
 
-  function updateChart(fromDate: Dayjs | null, toDate: Dayjs | null) {
+  function refreshNeos(fromDate: Dayjs | null, toDate: Dayjs | null) {
     fetchNeo(fromDate, toDate);
   }
 
@@ -55,12 +52,10 @@ function Neo() {
 
       //Casting to any is not a good practise (it avoids features which TS provides)
       const activeElement = items[0].element as any;
-
       const bubbleData = activeElement.$context.raw as INeo; 
-      neoListRef.current?.children[bubbleData.neoEntryIndex].scrollIntoView();
-      flushSync(() => {
-        setHighlightedNeoIndex(bubbleData.neoEntryIndex);
-      })
+      //flushSync(() => {
+      setHighlightedNeoIndex(bubbleData.neoEntryIndex);
+      //})
     }
     else if (highlightedNeoIndex !== -1) {
       setHighlightedNeoIndex(-1);
@@ -98,54 +93,30 @@ function Neo() {
     return neoList;
   }
 
-  const neoHeader = <>
-    <Typography variant="h2" align="center">Near-Earth Objects</Typography>
-    <FromToDatePicker updateChart={updateChart}/>
-  </>
-
-  if (errorOccured) {
-    return (
-      <>
-        {neoHeader}
-        <Typography variant="h2" align="center">Error occured when calling API 😕</Typography>
-      </>
-    );
-  }
-  else if (!isNeoLoaded) {
-    return (
-      <>
-        {neoHeader}
-        <LoadingEllipsis/>
-      </>
-    );
-  }
-  else {
-    return(
-      <>
-        {neoHeader}
-        <Container maxWidth="xl">
-          <Stack direction="row">
-            <Stack 
-              direction="column" 
-              spacing={2} 
-              sx={{width: "20vw", 
-                height: "70vh", 
-                overflow: "auto",
-                marginRight: 1, 
-                border: 1, 
-                borderRadius: 1, 
-                borderColor: 'grey.500'}}
-              ref={neoListRef}>
-              {createNeoList()}
-            </Stack>
-            <Box sx={{width: "70vw"}}>
-              <NeosBubbleChart neos={neos} bubbleTooltipIndex={bubbleTooltipIndex} handleBubbleHover={handleBubbleHover}/>
-            </Box>
-          </Stack>
-        </Container>
-      </>
-    );
-  }
+  return(
+    <>
+      <Container maxWidth="xl">
+        {mediumScreen ? 
+        <NeoMediumScreen 
+          neos={neos} 
+          neoEntries={createNeoList()} 
+          bubbleTooltipIndex={bubbleTooltipIndex}
+          highlightedNeoIndex={highlightedNeoIndex}
+          errorOccured={errorOccured}
+          isNeoLoaded={isNeoLoaded}
+          refreshNeos={refreshNeos}
+          handleBubbleHover={handleBubbleHover}
+        /> : 
+        <NeoSmallScreen 
+          neos={neos} 
+          neoEntries={createNeoList()} 
+          errorOccured={errorOccured}
+          isNeoLoaded={isNeoLoaded}
+          refreshNeos={refreshNeos}
+        />}
+      </Container> 
+    </>
+  );
 };
   
 export default Neo;
