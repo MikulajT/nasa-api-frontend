@@ -1,5 +1,4 @@
 import { useState, useRef } from "react";
-import { flushSync } from "react-dom"
 import { Container, useMediaQuery } from "@mui/material";
 import { ActiveElement, ChartEvent } from "chart.js";
 import "chartjs-adapter-moment";
@@ -53,9 +52,7 @@ function Neo() {
       //Casting to any is not a good practise (it avoids features which TS provides)
       const activeElement = items[0].element as any;
       const bubbleData = activeElement.$context.raw as INeo; 
-      //flushSync(() => {
       setHighlightedNeoIndex(bubbleData.neoEntryIndex);
-      //})
     }
     else if (highlightedNeoIndex !== -1) {
       setHighlightedNeoIndex(-1);
