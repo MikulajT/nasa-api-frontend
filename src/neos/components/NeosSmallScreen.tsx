@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { INeoSmallScreenProps } from "./interfaces/INeoSmallScreenProps";
+import { INeoSmallScreenProps } from "../interfaces/INeosSmallScreenProps";
 import { Stack, Typography, createTheme, responsiveFontSizes, ThemeProvider, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FromToDatePicker from "./FromToDatePicker";
-import LoadingEllipsis from "./LoadingEllipsis";
+import LoadingEllipsis from "../../application/components/LoadingEllipsis";
 
 const NeoSmallScreen : React.FC<INeoSmallScreenProps> = (props) => {
     let [neosListHeight, setNeosListHeight] = useState<number>(170);

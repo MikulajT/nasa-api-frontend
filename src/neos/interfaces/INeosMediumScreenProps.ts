@@ -1,7 +1,7 @@
 import { ActiveElement, ChartEvent } from "chart.js";
 import { Dayjs } from "dayjs";
 import { IBubbleIndex } from "./IBubbleIndex";
-import { INeo } from "./INeo";
+import { INeo } from "./INeos";
 
 export interface INeoMediumScreenProps {
     neos: INeo[];

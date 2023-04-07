@@ -3,9 +3,9 @@ import { Typography, createTheme, ThemeProvider, responsiveFontSizes } from "@mu
 import { Container, Box } from "@mui/system";
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
-import { IApod } from "./interfaces/IApod";
-import LoadingEllipsis from "./LoadingEllipsis";
-import "./styles/Apod.css";
+import { IApod } from "../interfaces/IApod";
+import LoadingEllipsis from "../../application/components/LoadingEllipsis";
+import ".././styles/Apod.css";
 
 function App() {
   const emptyApod = {} as IApod;

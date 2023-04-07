@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./Layout";
-import Home from "./Home";
-import Neo from "./Neo";
-import Apod from "./Apod";
+import Home from "./components/Home";
+import Neo from "../neos/components/Neos";
+import Apod from "../apod/components/Apod";
 
 export default function App() {
   return (

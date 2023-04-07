@@ -1,5 +1,5 @@
 import { ActiveElement, ChartEvent } from "chart.js";
-import { INeo } from "./INeo"
+import { INeo } from "./INeos"
 import { IBubbleIndex } from "./IBubbleIndex";
 
 export interface INeosBubbleChartProps {

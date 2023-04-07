@@ -11,7 +11,7 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import { SvgIcon } from "@mui/material";
-import { ReactComponent as NasaLogo } from "./assets/nasa.svg";
+import { ReactComponent as NasaLogo } from "../.././assets/nasa.svg";
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);

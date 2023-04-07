@@ -4,7 +4,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs  } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-import { IFromToDatePicker } from "./interfaces/IFromToDatePicker";
+import { IFromToDatePicker } from "../interfaces/IFromToDatePicker";
 
 const FromToDatePicker: React.FC<IFromToDatePicker> = (props) => {
     const [fromDate, setFromDate] = useState<Dayjs | null>(dayjs());

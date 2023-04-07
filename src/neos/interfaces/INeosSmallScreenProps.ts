@@ -1,5 +1,5 @@
 import { Dayjs } from "dayjs";
-import { INeo } from "./INeo";
+import { INeo } from "./INeos";
 
 export interface INeoSmallScreenProps {
     neos: INeo[];

@@ -1,7 +1,7 @@
 import { Typography, Box, Tooltip, Link } from "@mui/material";
 import dayjs  from "dayjs";
-import { INeoEntryProps } from "./interfaces/INeoEntryProps";
-import "./styles/NeoEntry.css";
+import { INeoEntryProps } from "../interfaces/INeoEntryProps";
+import ".././styles/NeoEntry.css";
 
 const NeoEntry: React.FC<INeoEntryProps> = (props) => {
 

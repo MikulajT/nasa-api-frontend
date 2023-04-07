@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import { INeosBubbleChartProps } from "./interfaces/INeosBubbleChartProps"
+import { INeosBubbleChartProps } from "../interfaces/INeosBubbleChartProps";
 import {
     Chart,
     LinearScale,
@@ -12,8 +12,8 @@ import {
     ChartArea
   } from "chart.js";
 import { Bubble } from "react-chartjs-2";
-import { bubbleOutline } from "./chartJsPlugins/BubbleOutline";
-import { INeo } from "./interfaces/INeo";
+import { bubbleOutline } from "../../chartJsPlugins/BubbleOutline";
+import { INeo } from "../interfaces/INeos";
 
 const NeosBubbleChart: React.FC<INeosBubbleChartProps> = (props) => {  
     const chartRef = useRef<Chart>();

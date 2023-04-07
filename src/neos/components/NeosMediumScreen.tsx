@@ -3,8 +3,8 @@ import { Box } from "@mui/system";
 import { Stack, Grid, Typography } from "@mui/material";
 import NeosBubbleChart from "./NeosBubbleChart";
 import FromToDatePicker from "./FromToDatePicker";
-import LoadingEllipsis from "./LoadingEllipsis";
-import { INeoMediumScreenProps } from "./interfaces/INeoMediumScreenProps";
+import LoadingEllipsis from "../../application/components/LoadingEllipsis";
+import { INeoMediumScreenProps } from "../interfaces/INeosMediumScreenProps";
 
 const NeoMediumScreen : React.FC<INeoMediumScreenProps> = (props) => {
     const neoListRef = useRef<HTMLElement>();

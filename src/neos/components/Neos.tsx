@@ -1,14 +1,14 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Container, useMediaQuery } from "@mui/material";
 import { ActiveElement, ChartEvent } from "chart.js";
 import "chartjs-adapter-moment";
 import { Dayjs } from "dayjs";
 import NeoEntry from "./NeoEntry";
-import { INeo } from "./interfaces/INeo";
-import { INeoApiResponse } from "./interfaces/INeoApiResponse";
-import { IBubbleIndex } from "./interfaces/IBubbleIndex";
-import NeoMediumScreen from "./NeoMediumScreen";
-import NeoSmallScreen from "./NeoSmallScreen";
+import { INeo } from "../interfaces/INeos";
+import { INeoApiResponse } from "../interfaces/INeosApiResponse";
+import { IBubbleIndex } from "../interfaces/IBubbleIndex";
+import NeoMediumScreen from "./NeosMediumScreen";
+import NeoSmallScreen from "./NeosSmallScreen";
 
 function Neo() {
   const [neos, setNeos] = useState<INeo[]>([] as INeo[]);
