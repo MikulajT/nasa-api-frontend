@@ -66,6 +66,9 @@ function ResponsiveAppBar() {
               <MenuItem onClick={handleCloseNavMenu}>
                 <Link href="/neo" sx={{color: "black"}} textAlign="center" underline="none">NEO</Link>
               </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Link href="/mrp" sx={{color: "black"}} textAlign="center" underline="none">MRP</Link>
+              </MenuItem>
             </Menu>
           </Box>
           <Link href="/">
@@ -87,6 +90,14 @@ function ResponsiveAppBar() {
             sx={{ my: 2, color: "white", display: "block" }}
           >
             NEO
+          </Button>
+          <Button
+            component={RouterLink} 
+            to="/mrp"
+            onClick={handleCloseNavMenu}
+            sx={{ my: 2, color: "white", display: "block" }}
+          >
+            MRP
           </Button>
           </Box>
         </Toolbar>
