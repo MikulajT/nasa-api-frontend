@@ -19,10 +19,10 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { IRoverManifest } from "../interfaces/IRoverManifest";
 import LoadingEllipsis from "../../application/components/LoadingEllipsis";
 import RoverPhoto from "./RoverPhoto";
-import { IRoverPhotoProps } from "../interfaces/IRoverPhotoProps";
+import { IRoverPhotoResponse } from "../interfaces/IRoverPhotoResponse";
 
 function Mrp() {
-  const [roverPhotos, setRoverPhotos] = useState<IRoverPhotoProps[]>([] as IRoverPhotoProps[]);
+  const [roverPhotos, setRoverPhotos] = useState<IRoverPhotoResponse[]>([] as IRoverPhotoResponse[]);
   const [photosAreLoading, setphotosAreLoading] = useState<boolean>(false);
   const [manifestIsLoading, setManifestIsLoading] = useState<boolean>(true);
   const [errorOccured, setErrorOccured] = useState<boolean>(false);
@@ -115,7 +115,7 @@ function Mrp() {
     setphotosAreLoading(true);
     let response = await fetch(`http://localhost:5076/api/MarsRover/RoverPhotos?roverId=${selectedRoverId}&date=${roverPhotoDate}&camera=${selectedCameraId}`);
     if (response.ok) {
-      const data : IRoverPhotoProps[] = await response.json();
+      const data : IRoverPhotoResponse[] = await response.json();
       setphotosAreLoading(false);
       setErrorOccured(false);
       setRoverPhotos(data);
@@ -129,7 +129,7 @@ function Mrp() {
     const roverPhotoList: React.ReactElement[] = [];
     for (let i = 0; i < roverPhotos.length; i++) {
       roverPhotoList.push(
-        <RoverPhoto cameraName={roverPhotos[i].cameraName} imgSrc={roverPhotos[i].imgSrc}/>);
+        <RoverPhoto key={roverPhotos[i].id} cameraName={roverPhotos[i].cameraName} imgSrc={roverPhotos[i].imgSrc}/>);
     }
     return roverPhotoList;
   }
