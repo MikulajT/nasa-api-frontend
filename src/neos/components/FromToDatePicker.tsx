@@ -17,7 +17,7 @@ const FromToDatePicker: React.FC<IFromToDatePicker> = (props) => {
           direction={{ xs: "column", sm: "row" }}
           justifyContent="center" 
           spacing={{ xs: 1, sm: 2, md: 4 }} 
-          sx={{mt: 2, mb: 2}}
+          sx={{mt: 2, mb: 2, pointerEvents: props.disabled ? "none" : "auto"}}
         >
           <DatePicker
             label="From"

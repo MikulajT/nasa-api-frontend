@@ -9,7 +9,7 @@ export interface INeoMediumScreenProps {
     bubbleTooltipIndex: IBubbleIndex;
     highlightedNeoIndex: number;
     errorOccured: boolean;
-    isNeoLoaded: boolean;
+    isNeoLoading: boolean;
     refreshNeos(fromDate: Dayjs | null, toDate: Dayjs | null) : void
     handleBubbleHover(e : ChartEvent, items : ActiveElement[]) : void
 }

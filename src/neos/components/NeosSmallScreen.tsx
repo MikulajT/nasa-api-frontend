@@ -32,7 +32,7 @@ const NeoSmallScreen : React.FC<INeoSmallScreenProps> = (props) => {
                 <Typography>Set time range</Typography>
             </AccordionSummary>
             <AccordionDetails>
-                <FromToDatePicker updateChart={props.refreshNeos}/>
+                <FromToDatePicker updateChart={props.refreshNeos} disabled={props.isNeoLoading}/>
             </AccordionDetails>
         </Accordion>
     </>
@@ -47,7 +47,7 @@ const NeoSmallScreen : React.FC<INeoSmallScreenProps> = (props) => {
         </>
         );
     }
-    else if (!props.isNeoLoaded) {
+    else if (props.isNeoLoading) {
         return (
         <>
             {neoHeader}

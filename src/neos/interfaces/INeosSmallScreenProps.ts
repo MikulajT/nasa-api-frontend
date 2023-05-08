@@ -5,6 +5,6 @@ export interface INeoSmallScreenProps {
     neos: INeo[];
     neoEntries: React.ReactElement[];
     errorOccured: boolean;
-    isNeoLoaded: boolean;
+    isNeoLoading: boolean;
     refreshNeos(fromDate: Dayjs | null, toDate: Dayjs | null) : void
 }

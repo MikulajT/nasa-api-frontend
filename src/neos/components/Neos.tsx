@@ -12,14 +12,14 @@ import NeoSmallScreen from "./NeosSmallScreen";
 
 function Neo() {
   const [neos, setNeos] = useState<INeo[]>([] as INeo[]);
-  const [isNeoLoaded, setIsNeoLoaded] = useState<boolean>(true);
+  const [isNeoLoading, setIsNeoLoading] = useState<boolean>(false);
   const [errorOccured, setErrorOccured] = useState<boolean>(false);
   const [highlightedNeoIndex, setHighlightedNeoIndex] = useState<number>(-1);
   const [bubbleTooltipIndex, setBubbleTooltipIndex] = useState<IBubbleIndex>({datasetIndex: -1, index: -1});
   const mediumScreen = useMediaQuery("(min-width:900px)");
 
   async function fetchNeo(fromDate: Dayjs | null, toDate: Dayjs | null) {
-    setIsNeoLoaded(false);
+    setIsNeoLoading(true);
     let response = await fetch(`http://localhost:5076/api/neo?startDate=${fromDate?.format("MM-DD-YYYY")}&endDate=${toDate?.format("MM-DD-YYYY")}`);
     if (response.ok) {
       const data : INeoApiResponse[] = await response.json();
@@ -33,7 +33,7 @@ function Neo() {
           neoEntryIndex: index
         }
         ))
-      setIsNeoLoaded(true);
+      setIsNeoLoading(false);
       setErrorOccured(false);
       setNeos(neos);
     }
@@ -100,7 +100,7 @@ function Neo() {
           bubbleTooltipIndex={bubbleTooltipIndex}
           highlightedNeoIndex={highlightedNeoIndex}
           errorOccured={errorOccured}
-          isNeoLoaded={isNeoLoaded}
+          isNeoLoading={isNeoLoading}
           refreshNeos={refreshNeos}
           handleBubbleHover={handleBubbleHover}
         /> : 
@@ -108,7 +108,7 @@ function Neo() {
           neos={neos} 
           neoEntries={createNeoList()} 
           errorOccured={errorOccured}
-          isNeoLoaded={isNeoLoaded}
+          isNeoLoading={isNeoLoading}
           refreshNeos={refreshNeos}
         />}
       </Container> 

@@ -17,7 +17,7 @@ const NeoMediumScreen : React.FC<INeoMediumScreenProps> = (props) => {
 
     const neoHeader = <>
         <Typography variant="h2" align="center">Near-Earth Objects</Typography>
-        <FromToDatePicker updateChart={props.refreshNeos}/>
+        <FromToDatePicker updateChart={props.refreshNeos} disabled={props.isNeoLoading}/>
     </>
 
     if (props.errorOccured) {
@@ -28,7 +28,7 @@ const NeoMediumScreen : React.FC<INeoMediumScreenProps> = (props) => {
         </>
         );
     }
-    else if (!props.isNeoLoaded) {
+    else if (props.isNeoLoading) {
         return (
         <>
             {neoHeader}
