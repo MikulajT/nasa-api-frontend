@@ -134,7 +134,7 @@ function Mrp() {
     return roverPhotoList;
   }
 
-  const imageList = <ImageList sx={{ width: 1300, height: 700 }} cols={1} rowHeight={164}>
+  const imageList = <ImageList sx={{ width: "90%", height: 700 }} cols={3} rowHeight={164}>
                       {CreatePhotoList()}
                     </ImageList>;
 
