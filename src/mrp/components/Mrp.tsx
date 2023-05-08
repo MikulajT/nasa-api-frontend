@@ -9,20 +9,25 @@ import { Typography,
   Select, 
   SelectChangeEvent, 
   TextField,
-  Stack} from "@mui/material";
+  Stack,
+  Button,
+  ImageList} from "@mui/material";
 import { Container } from "@mui/system";
 import dayjs, { Dayjs } from "dayjs";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { IRoverManifest } from "../interfaces/IRoverManifest";
 import LoadingEllipsis from "../../application/components/LoadingEllipsis";
+import RoverPhoto from "./RoverPhoto";
+import { IRoverPhotoProps } from "../interfaces/IRoverPhotoProps";
 
 function Mrp() {
+  const [roverPhotos, setRoverPhotos] = useState<IRoverPhotoProps[]>([] as IRoverPhotoProps[]);
   const [photosAreLoading, setphotosAreLoading] = useState<boolean>(false);
   const [manifestIsLoading, setManifestIsLoading] = useState<boolean>(true);
   const [errorOccured, setErrorOccured] = useState<boolean>(false);
   const [selectedRoverId, setSelectedRoverId] = useState<"5" | "6" | "7" | "8">("5");
-  const [selectedCameraId, setSelectedCameraId] = useState<string>("FHAZ");
+  const [selectedCameraId, setSelectedCameraId] = useState<string>("ALL");
   const [roverPhotoDate, setRoverPhotoDate] = useState<Dayjs | null>(null);
   const [maxDate, setMaxDate] = useState<Dayjs | null>(null);
   const roverToCamerasMapping = {
@@ -76,7 +81,7 @@ function Mrp() {
 
   async function fetchRoverManifest() {
     setManifestIsLoading(true);
-    let response = await fetch(`http://localhost:5076/api/MarsRover/RoverManifest?roverId=${selectedRoverId}`);
+    let response = await fetch(`http://localhost:5076/api/MarsRover/RoverManifest?roverId=${selectedRoverId}&camera=${selectedCameraId}`);
     if (response.ok) {
       setManifestIsLoading(false);
       const data : IRoverManifest = await response.json();
@@ -99,11 +104,39 @@ function Mrp() {
 
   function GetRoverCamerasByRover(roverId: "5" | "6" | "7" | "8") : React.ReactElement[] {
     let roverCameras : React.ReactElement[] = [];
+    roverCameras.push(<MenuItem key="ALL" value="ALL"><em>All cameras</em></MenuItem>);
     for (var camera of roverToCamerasMapping[roverId]) {
       roverCameras.push(<MenuItem key={camera.id} value={camera.id}>{camera.value}</MenuItem>)
     }
     return roverCameras;
   }
+
+  async function RefreshRoverPhotos() {
+    setphotosAreLoading(true);
+    let response = await fetch(`http://localhost:5076/api/MarsRover/RoverPhotos?roverId=${selectedRoverId}&date=${roverPhotoDate}&camera=${selectedCameraId}`);
+    if (response.ok) {
+      const data : IRoverPhotoProps[] = await response.json();
+      setphotosAreLoading(false);
+      setErrorOccured(false);
+      setRoverPhotos(data);
+    }
+    else {
+      setErrorOccured(true);
+    }
+  }
+
+  function CreatePhotoList() : React.ReactElement[] {
+    const roverPhotoList: React.ReactElement[] = [];
+    for (let i = 0; i < roverPhotos.length; i++) {
+      roverPhotoList.push(
+        <RoverPhoto cameraName={roverPhotos[i].cameraName} imgSrc={roverPhotos[i].imgSrc}/>);
+    }
+    return roverPhotoList;
+  }
+
+  const imageList = <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
+                      {CreatePhotoList()}
+                    </ImageList>;
 
   if (errorOccured) {
     return (
@@ -112,18 +145,17 @@ function Mrp() {
       </ThemeProvider>
     );
   }
-  else if (photosAreLoading || manifestIsLoading) {
-    return (
-      <LoadingEllipsis/>
-    );
-  }
   else {
     return (
       <Container>
         <ThemeProvider theme={theme}>
           <Typography variant="h3" align="center">Mars rover photos</Typography>
         </ThemeProvider>
-        <Stack direction="row" spacing={2} justifyContent="center" sx={{m: 2}}>
+        <Stack 
+          direction="row" 
+          spacing={2} 
+          justifyContent="center" 
+          sx={{m: 2, pointerEvents: manifestIsLoading || photosAreLoading ? "none" : "auto"}}>
           <FormControl>
             <InputLabel id="roverSelectLabel">Rover</InputLabel>
             <Select
@@ -140,18 +172,6 @@ function Mrp() {
             </Select>
           </FormControl>
           <FormControl>
-            <InputLabel id="cameraSelectLabel">Rover camera</InputLabel>
-            <Select
-              labelId="cameraSelectLabel"
-              id="cameraSelect"
-              value={selectedCameraId}
-              label="Rover camera"
-              onChange={handleCameraChange}
-            >
-              {GetRoverCamerasByRover(selectedRoverId)}
-            </Select> 
-          </FormControl>
-          <FormControl>
             <LocalizationProvider dateAdapter={AdapterDayjs}>       
               <DatePicker
                 label="Date"
@@ -163,7 +183,21 @@ function Mrp() {
               />
             </LocalizationProvider>
           </FormControl>
+          <FormControl>
+            <InputLabel id="cameraSelectLabel">Rover camera</InputLabel>
+            <Select
+              labelId="cameraSelectLabel"
+              id="cameraSelect"
+              value={selectedCameraId}
+              label="Rover camera"
+              onChange={handleCameraChange}
+            >
+              {GetRoverCamerasByRover(selectedRoverId)}
+            </Select> 
+          </FormControl>
+          <Button variant="contained" onClick={RefreshRoverPhotos}>Refresh</Button>
         </Stack>
+        {manifestIsLoading || photosAreLoading ? <LoadingEllipsis/> : imageList}
       </Container>
     );
   } 
